@@ -1,0 +1,23 @@
+version: '2'
+services:
+  sass:
+    image: ubuntudesign/sass
+    command: sass --watch --style compressed --scss /app/static/styles/scss/style.scss:/app/static/styles/style.css
+    restart: always
+  web:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    command: python3 wsgi.py 
+    env_file: ./.env
+    volumes:
+      - ./:/code
+    working_dir: /code
+    ports:
+      - "443:443"
+      - "8051:80"
+    links:
+      - sass
+    depends_on:
+      - sass
+    restart: always
