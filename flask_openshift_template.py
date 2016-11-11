@@ -8,6 +8,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route("/test")
+def index():
+    return render_template('test.html')
+
+
 @app.route("/login/", methods=["POST"])
 def login():
     if request.method == "POST":
