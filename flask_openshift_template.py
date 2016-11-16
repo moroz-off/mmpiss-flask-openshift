@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, redirect, render_template, request, url_for
+
+__authors__ = "Морозов Денис - morozoff.py@gmail.com и Павшева Мария"
 
 app = Flask(__name__)
 
@@ -6,11 +9,6 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template('index.html')
-
-
-@app.route("/test")
-def index():
-    return render_template('test.html')
 
 
 @app.route("/login/", methods=["POST"])
