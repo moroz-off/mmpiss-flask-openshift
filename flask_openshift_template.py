@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, redirect, render_template, request, url_for
 from models import mm1, mminf, mmv, mmvk, mmvkn
+import settings
+
+if settings.SETTINGS['lang'] == 'ru':
+    from lang.ru import index as lang_index
+else:
+    from lang.en import index as lang_index
 
 __authors__ = "Морозов Денис - morozoff.py@gmail.com и Павшева Мария"
 
 app = Flask(__name__)
+app.jinja_env.variable_start_string = '[['
+app.jinja_env.variable_end_string = ']]'
 
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', settings=settings.SETTINGS, lang=lang_index, author=__authors__)
 
 
 @app.route("/models/")
