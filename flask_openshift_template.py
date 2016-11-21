@@ -25,18 +25,18 @@ def index():
 def models(model=None):
     if not model:
         return redirect(url_for('index'))
-    base_args = (request.form['lambd'], request.form['miu'], request.form['to'])
+    base_args = (float(request.form['lambd']), float(request.form['miu']), int(request.form['to']))
     if model == 'mm1':
         return mm1.MM1(*base_args).get_json()
     if model == 'mminf':
         return mminf.MMinf(*base_args).get_json()
     if model == 'mmv':
-        return mmv.MMV(request.form['v'], *base_args).get_json()
+        return mmv.MMV(int(request.form['v']), *base_args).get_json()
     if model == 'mmvk':
-        return mmvk.MMVK(request.form['v'], *base_args).get_json()
+        return mmvk.MMVK(int(request.form['v']), *base_args).get_json()
     if model == 'mmvkn':
-        return mmvkn.MMVKN(request.form['v'], request.form['lambd'], request.form['miu'],
-                           request.form['to'], request.form['n']).get_json()
+        return mmvkn.MMVKN(int(request.form['v']), float(request.form['lambd']),
+                           float(request.form['miu']), int(request.form['to']), float(request.form['n'])).get_json()
 
 
 if __name__ == '__main__':
