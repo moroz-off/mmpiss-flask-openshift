@@ -1,8 +1,11 @@
 version: '2'
 services:
   scss:
-    image: ubuntudesign/sass
-    command: sass --watch --style compressed --scss /app/static/styles/scss/style.scss:/app/static/styles/style.css
+    #image: ubuntudesign/sass
+    build:
+      context: ./
+      dockerfile: ./Dockerfile_sass
+    command: sass --watch --style compressed --scss /app/static/styles/scss/style.scss:/app/static/styles/style.css --no-cache --default-encoding="UTF-8"
     volumes:
       - ./:/app
     restart: always
@@ -10,17 +13,17 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    image: python:3.3
-    command: python3 wsgi.py 
+    #image: python:3.3
+    command: wsgi.py
     env_file: ./.env
     volumes:
       - ./:/app
     working_dir: /app
     ports:
       - "443:443"
-      - "8051:80"
-    links:
-      - scss
-    depends_on:
-      - scss
+      - "8051:8051"
+    #links:
+    #  - scss
+    #depends_on:
+    #  - scss
     restart: always
