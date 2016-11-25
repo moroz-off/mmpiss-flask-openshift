@@ -2,6 +2,7 @@
 from flask import Flask, redirect, render_template, request, url_for
 from models import mm1, mminf, mmv, mmvk, mmvkn
 import settings
+from core.jinja_func import static_css, static_js
 
 if settings.SETTINGS['lang'] == 'ru':
     from lang.ru import index as lang_index
@@ -17,7 +18,8 @@ app.jinja_env.variable_end_string = ']]'
 
 @app.route("/")
 def index():
-    return render_template('index.html', settings=settings.SETTINGS, lang=lang_index, author=__authors__)
+    return render_template('index.html', settings=settings.SETTINGS, lang=lang_index, author=__authors__,
+                           static_css=static_css, static_js=static_js)
 
 
 @app.route("/models/")
