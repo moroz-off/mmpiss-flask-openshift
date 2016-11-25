@@ -3,4 +3,28 @@
 
 @import "global";
 @import "foundation";
-@include foundation-everything;
+//@include foundation-everything;
+
+@include foundation-global-styles;
+@include foundation-grid;
+@include foundation-typography;
+@include foundation-tabs;
+@include foundation-table;
+
+
+html, body {
+	height: 100%;
+}
+
+.ms-chart-content {
+	max-height: 600px;
+	min-height: 400px;
+}
+
+.expanded {
+  height: 100%;
+}
+
+.tabs {
+	height: 100%;
+}
