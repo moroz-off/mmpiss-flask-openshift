@@ -15,14 +15,285 @@
 
   <title>[[ lang.head_title ]]</title>
 
-  <script src="/static/js/angular.min.js"></script>
-  <script src="/static/js/mm-foundation-tpls-0.8.0.min.js"></script>
+  <script src="[[ static_js('angular.min.js') ]]"></script>
+  <script src="[[ static_js('angular-foundation.min.js') ]]"></script>
+  <script src="[[ static_js('d3.min.js') ]]"></script>
+  <script src="[[ static_js('LineChart.min.js') ]]"></script>
 
-  <link rel='stylesheet' href='/static/styles/style.css'>
+  <link rel='stylesheet' href="[[ static_css('style.css') ]]">
+  <link rel='stylesheet' href="[[ static_css('LineChart.min.css') ]]">
 </head>
 <body>
+	<div class="expanded row small-collapse main">
+		<div class="small-2 large-2 columns collapse tabs-parent" ng-controller="TabsController">
+			<ul class="tabs vertical">
+				<li class="tabs-title" ng-repeat="tab in tabs" ng-class="{'is-active': isActiveTab(tab)}">
+						<a ng-click="select(tab)">{{tab.title}}</a>
+				</li>
+			</ul>
+		</div>
+		<div class="small-12 columns tabs-dropdown-parent" ng-controller="TabsController">
+			<div class="small-12 columns small-collapse">
+				<dropdown-toggle close-on-click="true" pane-align="center">
+					<toggle>
+					  <a class="expanded dropdown button">Модель</a>
+					</toggle>
+					<pane>
+					  <ul class="menu vertical">
+					    <li ng-repeat="tab in tabs">
+					      <a href="#" ng-click="select(tab); $close()">{{tab.title}}</a>
+					    </li>
+				        <li>
+				          <a ng-click="$close()">Закрыть</a>
+				        </li>
+					  </ul>
+					</pane>
+				</dropdown-toggle>
+			</div>
+		</div>
+		<div class="small-12 medium-10 large-10 columns content">
+			<div class="row expanded">
+		    	<div class="small-12 columns no-padding">
+					<form ng-submit="submitForm()" ng-controller="postController">
+						<div class="row expanded">
+							<div class="small-12 medium-12 large-10 columns">
+								<div class="row expanded large-collapse">
+									<div class="small-12 medium-4 large-2 columns">
+										<div class="row">
+											<div class="small-2 columns">
+												<label for="middle-label" class="text-left middle">λ</label>
+											</div>
+											<div class="small-10 large-8 end columns">
+												<input type="text" id="middle-label" ng-model="form_ms.lambd" placeholder="Right- and middle-aligned text input">
+											</div>
+										</div>
+									</div>
+									<div class="small-12 medium-4 large-2 columns">
+										<div class="row">
+											<div class="small-2 columns">
+												<label for="middle-label" class="text-left middle">μ</label>
+											</div>
+											<div class="small-10 large-8 columns">
+												<input type="text" id="middle-label" ng-model="form_ms.miu" placeholder="Right- and middle-aligned text input">
+											</div>
+										</div>
+									</div>
+									<div class="small-12 medium-4 large-2 columns">
+										<div class="row">
+											<div class="small-2 columns">
+												<label for="middle-label" class="text-left middle">k</label>
+											</div>
+											<div class="small-10 large-8 columns">
+												<input type="text" id="middle-label" ng-model="form_ms.to" placeholder="Right- and middle-aligned text input">
+											</div>
+										</div>
+									</div>
+									<div class="small-12 medium-4 large-2 columns end">
+										<div class="row" ng-show="(model != 'mm1' && model != 'mminf')">
+											<div class="small-2 columns">
+												<label for="middle-label" class="text-left middle">v</label>
+											</div>
+											<div class="small-10 large-8 columns">
+												<input type="text" id="middle-label" ng-model="form_ms.v" placeholder="Right- and middle-aligned text input">
+											</div>
+										</div>
+									</div>
+									<div class="small-12 medium-4 large-2 columns end">
+										<div class="row" ng-show="model == 'mmvkn'">
+											<div class="small-2 columns">
+												<label for="middle-label" class="text-left middle">n</label>
+											</div>
+											<div class="small-10 large-8 columns">
+												<input type="text" id="middle-label" ng-model="form_ms.n" placeholder="Right- and middle-aligned text input">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="small-12 large-2 columns">
+							  <button class="success button expanded" type="submit" href="#">Построить</button>
+							</div>
+						</div>
+			    	</form>
+		    	</div>
+			</div>
+			<div class="row expanded ms-tabl-graph">
+				<div class="small-12 medium-9 large-10 columns graph-parent">
+					<div class="row">
+						<p>khjkjh</p>
+					</div>
+					<div class="ms-chart ms-chart-content" ng-controller="MSGraph">
+				      <linechart data="data" options="options"></linechart>
+				    </div>
+				</div>
+				<div class="small-12 medium-3 large-2 columns no-padding-left res-parent">
+					<div class="ms-table">
+						<table ng-controller="tableController" class="stack">
+						  <thead>
+						    <tr>
+						      <th>Результат:</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr ng-repeat="d in objectValue">
+						      <td>{{d.y}}</td>
+						    </tr>
+						  </tbody>
+						</table>
+					</div>
+		    	</div>
+			</div>
+		</div>
+	</div>
+
 <script type="text/javascript">
-	angular.module('[[ settings.angular_app_name ]]', ['mm.foundation']);
+	var app = angular.module('[[ settings.angular_app_name ]]', ['mm.foundation', 'n3-line-chart']);
+
+	app.factory('sharedProperties', function() {
+	    var ms_data = {mm1: {data: []},
+	    				mminf: {data: []},
+	    				mmv: {data: []},
+	    				mmvk: {data: []},
+	    				mmvkn: {data: []}
+	    			};
+
+	    var cur_model = 'mm1';
+
+	    return {
+	        setObject: function(value) {
+	            ms_data[cur_model].data.push(value);
+	        },
+	        getObject: function() {
+	            return ms_data[cur_model];
+	        },
+	        clearObject: function() {
+		        for (var i = ms_data[cur_model].data.length; i > 0; i--) {
+					ms_data[cur_model].data.pop();
+				}
+	        },
+	        getModel: function() {
+	            return cur_model;
+	        },
+	        setModel: function(model) {
+	            cur_model = model;
+	        }
+	    }
+	});
+
+	app.controller('tableController', function($scope, sharedProperties) {
+	    $scope.$watch(function () {
+		    return sharedProperties.getObject();
+		}, function (value) {
+	        $scope.objectValue = value.data;
+	    });
+	    $scope.objectValue = sharedProperties.getObject().data;
+	});
+
+	app.controller('postController', function($scope, $http, sharedProperties) {
+	    $scope.$watch(function () {
+		    return sharedProperties.getModel();
+		}, function (value) {
+	        $scope.model = value;
+	    });
+
+      // create a blank object to handle form data.
+      	$scope.model = sharedProperties.getModel();
+        $scope.form_ms = {};
+      // calling our submit function.
+        $scope.submitForm = function() {
+	    	model = sharedProperties.getModel();
+	        // Posting data to php file
+	        $http({
+	          method  : 'POST',
+	          url     : '[[ url_for("models") ]]' + $scope.model,
+	          data    : $scope.form_ms, //forms user object
+	          headers : {'Content-Type': 'application/json'}
+	         })
+	          .success(function(data) {
+					if (data.errors || !data.data) {
+					// Showing errors.
+						$scope.errorName = data.errors.name;
+						$scope.errorUserName = data.errors.username;
+						$scope.errorEmail = data.errors.email;
+					} else {
+						sharedProperties.clearObject();
+						for (var i = 0; i < data.data.length; i++) {
+							sharedProperties.setObject(data.data[i]);
+						}
+		          }
+	          });
+        };
+    });
+
+    app.controller('MSGraph', function($scope, sharedProperties) {
+		$scope.$watch(function () {
+		    return sharedProperties.getObject();
+		}, function (value) {
+			$scope.data.dataset0: value.data
+			}
+		});
+		$scope.$watch(function () {
+		    return sharedProperties.getModel();
+		}, function (value) {
+			$scope.options.series[0].label = value;
+		});
+
+		$scope.data = {
+			dataset0: sharedProperties.getObject().data
+		}
+
+		$scope.options = {
+			series: [
+			  {
+			    axis: "y",
+			    dataset: "dataset0",
+			    key: "y",
+			    label: sharedProperties.getModel(),
+			    color: "#1f77b4",
+			    type: ['line', 'dot', 'area'],
+			    id: 'mySeries0'
+			  }
+			],
+			axes: {x: {key: "x"}}
+		};
+
+	});
+
+	app.controller('TabsController', function($scope, sharedProperties) {
+	    $scope.tabs = [{
+	            title: 'M|M|1',
+	            name: 'mm1'
+	        }, {
+	            title: 'M|M|∞',
+	            name: 'mminf'
+	        }, {
+	            title: 'M|M|V',
+	            name: 'mmv'
+	        }, {
+	            title: 'M|M|V|K',
+	            name: 'mmvk'
+	        }, {
+	            title: 'M|M|V|K|N',
+	            name: 'mmvkn'
+	        }];
+
+		$scope.model = sharedProperties.getModel();
+		$scope.currentTab = $scope.model;
+
+		$scope.select = function (tab) {
+		     sharedProperties.setModel(tab.name);
+		     $scope.model = tab.name;
+		     $scope.currentTab = tab.name;
+		};
+
+	    $scope.isActiveTab = function(tab) {
+	        return tab.name == $scope.currentTab;
+	    }
+
+	});
+
 </script>
+
+
 </body>
 </html>
