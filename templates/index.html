@@ -229,8 +229,7 @@
 		$scope.$watch(function () {
 		    return sharedProperties.getObject();
 		}, function (value) {
-			$scope.data.dataset0: value.data
-			}
+			$scope.data.dataset0 = value.data;
 		});
 		$scope.$watch(function () {
 		    return sharedProperties.getModel();
