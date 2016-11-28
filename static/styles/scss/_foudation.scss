@@ -1,0 +1,81 @@
+/**
+ * Foundation for Sites by ZURB
+ * Version 6.2.0
+ * foundation.zurb.com
+ * Licensed under MIT Open Source
+ */
+
+// Components
+@import 'foundation-sites/grid/grid';
+@import 'foundation-sites/typography/typography';
+@import 'foundation-sites/forms/forms';
+@import 'foundation-sites/components/visibility';
+@import 'foundation-sites/components/float';
+@import 'foundation-sites/components/button';
+@import 'foundation-sites/components/button-group';
+@import 'foundation-sites/components/accordion-menu';
+@import 'foundation-sites/components/accordion';
+@import 'foundation-sites/components/badge';
+@import 'foundation-sites/components/breadcrumbs';
+@import 'foundation-sites/components/callout';
+@import 'foundation-sites/components/close-button';
+@import 'foundation-sites/components/drilldown';
+@import 'foundation-sites/components/dropdown-menu';
+@import 'foundation-sites/components/dropdown';
+@import 'foundation-sites/components/flex';
+@import 'foundation-sites/components/flex-video';
+@import 'foundation-sites/components/label';
+@import 'foundation-sites/components/media-object';
+@import 'foundation-sites/components/menu';
+@import 'foundation-sites/components/menu-icon';
+@import 'foundation-sites/components/off-canvas';
+@import 'foundation-sites/components/orbit';
+@import 'foundation-sites/components/pagination';
+@import 'foundation-sites/components/progress-bar';
+@import 'foundation-sites/components/reveal';
+@import 'foundation-sites/components/slider';
+@import 'foundation-sites/components/sticky';
+@import 'foundation-sites/components/switch';
+@import 'foundation-sites/components/table';
+@import 'foundation-sites/components/tabs';
+@import 'foundation-sites/components/title-bar';
+@import 'foundation-sites/components/top-bar';
+@import 'foundation-sites/components/thumbnail';
+@import 'foundation-sites/components/tooltip';
+
+@mixin foundation-everything($flex: false) {
+  @if $flex {
+    $global-flexbox: true !global;
+  }
+
+  @include foundation-global-styles;
+  @if not $flex {
+    @include foundation-grid;
+  }
+  @else {
+    @include foundation-flex-grid;
+  }
+  @include foundation-accordion;
+  @include foundation-accordion-menu;
+  @include foundation-close-button;
+  @include foundation-menu-icon;
+  @include foundation-drilldown-menu;
+  @include foundation-dropdown-menu;
+  @include foundation-flex-video;
+  @include foundation-media-object;
+  @include foundation-off-canvas;
+  @include foundation-orbit;
+  @include foundation-pagination;
+  @include foundation-sticky;
+  @include foundation-reveal;
+  @include foundation-thumbnail;
+  @include foundation-title-bar;
+  @include foundation-visibility-classes;
+  @include foundation-float-classes;
+
+  @if $flex {
+    @include foundation-flex-classes;
+  }
+}
+
+//@include foundation-everything;

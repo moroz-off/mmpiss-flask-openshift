@@ -1,8 +1,8 @@
 @charset 'utf-8';
 
 
-@import "global";
-@import "foundation";
+//@import "global";
+@import "material-foundation";
 //@include foundation-everything;
 
 @include foundation-global-styles;
@@ -10,21 +10,134 @@
 @include foundation-typography;
 @include foundation-tabs;
 @include foundation-table;
+@include foundation-label;
+@include foundation-forms;
+@include foundation-button;
+@include foundation-dropdown-menu;
+@include foundation-drilldown-menu;
+
+
+@mixin full-height() {
+	height: 100%;
+	max-height: 100%;
+	min-height: 100%;
+}
+
+@mixin tabl-graph-height() {
+	$height: 100% - 10%; //  - 2.4375rem;
+	$height-large: 100% - 5%;
+	@include breakpoint(small up) { //@media #{$small-up} { - foundation 5 < 6.3
+		height: $height;
+		max-height: $height;
+		min-height: $height;
+	}
+	@include breakpoint(large up) { //@media #{$large-up} { - foundation 5 < 6.3
+		height: $height-large;
+		max-height: $height-large;
+		min-height: $height-large;
+	}
+	@include breakpoint(medium only) { //@media #{$large-up} { - foundation 5 < 6.3
+		@include full-height;
+	}
+}
+
+@mixin columns-pad-top() {
+	padding-top: .625rem;
+}
 
 
 html, body {
-	height: 100%;
-}
-
-.ms-chart-content {
-	max-height: 600px;
-	min-height: 400px;
-}
-
-.expanded {
-  height: 100%;
+	@include full-height;
+	@include breakpoint(medium up) {
+		overflow-y: hidden;
+		overflow-y: hidden;
+	}
 }
 
 .tabs {
-	height: 100%;
+   @include full-height;
+}
+
+.ms-tabl-graph {
+	.no-padding {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	.no-padding-left {
+		@include breakpoint(medium up) {
+			padding-left: 0 !important;
+		}
+	}
+	.ms-chart-content {
+		//height: 600px;
+		//min-height: 400px;
+		//max-height: 600px;
+		margin-left: 0;
+		margin-right: 0;
+		.chart-legend {
+			position: relative !important;
+			margin-top: -1.6rem;
+		}
+		@include full-height;
+	}
+	.ms-table {
+		@include breakpoint(medium up) {
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+		margin-left: 0;
+		height: 100%;
+		padding-bottom: .625rem;
+		table {
+			@include full-height;
+			@include breakpoint(small only) {
+				tbody {
+				    overflow-y: auto;
+					overflow-x: hidden;
+					display: block;
+				}
+				thead {
+					display: block;
+				}
+			}
+		}
+	}
+	@include tabl-graph-height;
+}
+
+.main {
+	.tabs-parent {
+		@include full-height;
+		@include show-for(medium);
+	}
+	.tabs-dropdown-parent {
+		@include show-for-only(small);
+		@include columns-pad-top;
+	}
+	.content {
+		.res-parent {
+			@include tabl-graph-height;
+			@include breakpoint(small only) {
+				padding-top: 4rem;
+				padding-left: 1.25rem;
+				padding-right: 1.25rem;
+			}
+		}
+		.graph-parent {
+			height: 100% - 16%; //  - 2.4375rem;
+		}
+		@include full-height;
+		@include breakpoint(medium up) {
+			@include columns-pad-top;
+		}
+		@include breakpoint(medium only) {
+			overflow-y: auto;
+		}
+	}
+	.dropdown-pane {
+		@include breakpoint(small only) {
+			width: 90%;
+		}
+	}
+	@include full-height;
 }
