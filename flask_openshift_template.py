@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from models import mm1, mminf, mmv, mmvk, mmvkn
 import settings
@@ -50,7 +51,7 @@ def models(model=None):
         #                    float(request.form['miu']), int(request.form['to']),
         #                    float(request.form['n'])).get_json()
         init_mmvkn = mmvkn.MMVKN(int(data['v']), float(data['lambd']),
-                                 float(data['miu']), int(data['to']), float(data['n']))
+                                 float(data['miu']), int(data['to']), int(data['n']))
         return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(init_mmvkn.pk))})
 
 

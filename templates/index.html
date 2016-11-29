@@ -21,7 +21,6 @@
   <script src="[[ static_js('LineChart.min.js') ]]"></script>
 
   <link rel='stylesheet' href="[[ static_css('style.css') ]]">
-  <link rel='stylesheet' href="[[ static_css('LineChart.min.css') ]]">
 </head>
 <body>
 	<div class="expanded row small-collapse main">
@@ -54,64 +53,64 @@
 		<div class="small-12 medium-10 large-10 columns content">
 			<div class="row expanded">
 		    	<div class="small-12 columns no-padding">
-					<form ng-submit="submitForm()" ng-controller="postController">
+					<form name="msform" ng-submit="submitForm(msform.$valid)" ng-controller="postController" novalidate>
 						<div class="row expanded">
 							<div class="small-12 medium-12 large-10 columns">
 								<div class="row expanded large-collapse">
 									<div class="small-12 medium-4 large-2 columns">
 										<div class="row">
 											<div class="small-2 columns">
-												<label for="middle-label" class="text-left middle">λ</label>
+												<label for="mslambd" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_lambd.$error.float}">λ</label>
 											</div>
 											<div class="small-10 large-8 end columns">
-												<input type="text" id="middle-label" ng-model="form_ms.lambd" placeholder="Right- and middle-aligned text input">
+												<input type="number" id="mslambd" ng-model="form_ms.lambd" name="ms_lambd" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_lambd.$error.float}">
 											</div>
 										</div>
 									</div>
 									<div class="small-12 medium-4 large-2 columns">
 										<div class="row">
 											<div class="small-2 columns">
-												<label for="middle-label" class="text-left middle">μ</label>
+												<label for="msmiu" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_miu.$error.float}">μ</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="text" id="middle-label" ng-model="form_ms.miu" placeholder="Right- and middle-aligned text input">
+												<input type="number" id="msmiu" ng-model="form_ms.miu" name="ms_miu" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_miu.$error.float}">
 											</div>
 										</div>
 									</div>
 									<div class="small-12 medium-4 large-2 columns">
 										<div class="row">
 											<div class="small-2 columns">
-												<label for="middle-label" class="text-left middle">k</label>
+												<label for="msto" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_to.$error.integer || msform.ms_to.$error.min}">k</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="text" id="middle-label" ng-model="form_ms.to" placeholder="Right- and middle-aligned text input">
+												<input type="number" id="msto" ng-model="form_ms.to" name="ms_to" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_to.$error.integer || msform.ms_to.$error.min}">
 											</div>
 										</div>
 									</div>
 									<div class="small-12 medium-4 large-2 columns end">
 										<div class="row" ng-show="(model != 'mm1' && model != 'mminf')">
 											<div class="small-2 columns">
-												<label for="middle-label" class="text-left middle">v</label>
+												<label for="msv" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_v.$error.integer || msform.ms_v.$error.min}">v</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="text" id="middle-label" ng-model="form_ms.v" placeholder="Right- and middle-aligned text input">
+												<input type="number" id="msv" ng-model="form_ms.v" name="ms_v" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_v.$error.integer || msform.ms_v.$error.min}">
 											</div>
 										</div>
 									</div>
 									<div class="small-12 medium-4 large-2 columns end">
 										<div class="row" ng-show="model == 'mmvkn'">
 											<div class="small-2 columns">
-												<label for="middle-label" class="text-left middle">n</label>
+												<label for="msn" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_n.$error.integer || msform.ms_n.$error.min}">n</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="text" id="middle-label" ng-model="form_ms.n" placeholder="Right- and middle-aligned text input">
+												<input type="number" id="msn" ng-model="form_ms.n" name="ms_n" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_n.$error.integer || msform.ms_n.$error.min}">
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="small-12 large-2 columns">
-							  <button class="success button expanded" type="submit" href="#">Построить</button>
+							  <button class="success button expanded" type="submit" href="#" ng-class="{'disabled': !msform.$valid}">Построить</button>
 							</div>
 						</div>
 			    	</form>
@@ -150,11 +149,11 @@
 	var app = angular.module('[[ settings.angular_app_name ]]', ['mm.foundation', 'n3-line-chart']);
 
 	app.factory('sharedProperties', function() {
-	    var ms_data = {mm1: {data: []},
-	    				mminf: {data: []},
-	    				mmv: {data: []},
-	    				mmvk: {data: []},
-	    				mmvkn: {data: []}
+	    var ms_data = {mm1: {data: [' ']},
+	    				mminf: {data: [' ']},
+	    				mmv: {data: [' ']},
+	    				mmvk: {data: [' ']},
+	    				mmvkn: {data: [' ']}
 	    			};
 
 	    var cur_model = 'mm1';
@@ -180,6 +179,14 @@
 	    }
 	});
 
+	app.constant('ConstTooltip', {
+		lambd: 'Лямбда - постоянная интенсивность поступления вызовов',
+		miu: 'Мю - постоянная интенсивность освобождения вызовов',
+		v: 'Количество устройств',
+		to: 'Количество источников на обслуживании',
+		n: 'Число источников нагрузки'
+	});
+
 	app.controller('tableController', function($scope, sharedProperties) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getObject();
@@ -189,20 +196,29 @@
 	    $scope.objectValue = sharedProperties.getObject().data;
 	});
 
-	app.controller('postController', function($scope, $http, sharedProperties) {
+	app.controller('postController', function($scope, $http, sharedProperties, ConstTooltip) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getModel();
 		}, function (value) {
 	        $scope.model = value;
 	    });
 
-      // create a blank object to handle form data.
+	    $scope.tooltip = ConstTooltip;
+
       	$scope.model = sharedProperties.getModel();
-        $scope.form_ms = {};
-      // calling our submit function.
-        $scope.submitForm = function() {
+        $scope.form_ms = {'lambd': 1.1,
+	        				'miu': 3.2,
+	        				'to': 15,
+							'v': 1,
+							'n': 15
+	        			};
+
+        // calling our submit function.
+        $scope.submitForm = function(valid) {
+	        if (!valid) {
+		        return false;
+	        }
 	    	model = sharedProperties.getModel();
-	        // Posting data to php file
 	        $http({
 	          method  : 'POST',
 	          url     : '[[ url_for("models") ]]' + $scope.model,
@@ -289,6 +305,53 @@
 	        return tab.name == $scope.currentTab;
 	    }
 
+	});
+
+	var INTEGER_REGEXP = /^\-?\d+$/;
+	var FLOAT_REGEXP = /^[+-]?\d+(\.\d+)?$/;
+
+	app.directive('integer', function() {
+	  return {
+	    require: 'ngModel',
+	    link: function(scope, elm, attrs, ctrl) {
+	      ctrl.$validators.integer = function(modelValue, viewValue) {
+	        if (ctrl.$isEmpty(modelValue)) {
+	          // consider empty models to be valid
+	          return false;
+	        }
+
+	        if (INTEGER_REGEXP.test(viewValue)) {
+	          // it is valid
+	          return true;
+	        }
+
+	        // it is invalid
+	        return false;
+	      };
+	    }
+	  };
+	});
+
+	app.directive('float', function() {
+	  return {
+	    require: 'ngModel',
+	    link: function(scope, elm, attrs, ctrl) {
+	      ctrl.$validators.float = function(modelValue, viewValue) {
+	        if (ctrl.$isEmpty(modelValue)) {
+	          // consider empty models to be valid
+	          return false;
+	        }
+
+	        if (viewValue > 0 && FLOAT_REGEXP.test(viewValue)) {
+	          // it is valid
+	          return true;
+	        }
+
+	        // it is invalid
+	        return false;
+	      };
+	    }
+	  };
 	});
 
 </script>
