@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 from .mbase import MMBase
 from math import pow
 
@@ -11,9 +12,9 @@ class MMVKN(MMBase):
         self._val_pk = None
 
     def _pk(self):
-        for k in range(self._to):
+        for k in range(self._to + 1):
             div1 = self.ccc(self._n, k) * pow(self._lambd / self._miu, k)
-            div2 = sum((self.ccc(self._n, i) * pow(self._lambd / self._miu, i)) for i in range(self._v))
+            div2 = sum((self.ccc(self._n, i) * pow(self._lambd / self._miu, i)) for i in range(self._v + 1))
             yield div1 / div2
 
     @property
@@ -27,14 +28,14 @@ class MMVKN(MMBase):
         return self._miu > 0
 
     def k_mean(self):
-        return sum(((i * p) for i, p in zip(range(self._v), self.pk)))
+        return sum(((i * p) for i, p in zip(range(self._v + 1), self.pk)))
 
     def t_mean(self):
         return self.k_mean() / self._miu
 
     def _pt_pv(self, fn):
         div1 = self.ccc(fn, self._v) * pow(self._lambd / self._miu, self._v)
-        div2 = sum(((self.ccc(fn, i) * pow(self._lambd / self._miu, i)) for i in range(self._v)))
+        div2 = sum(((self.ccc(fn, i) * pow(self._lambd / self._miu, i)) for i in range(self._v + 1)))
 
         return div1 / div2
 

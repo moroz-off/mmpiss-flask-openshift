@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import division
 from .mbase import MMBase
 from math import pow
 
@@ -11,16 +12,17 @@ class MMV(MMBase):
     @property
     def pk(self):
         ro = self.ro
-        znam = sum((pow(ro, i) / self.factorial(i)) for i in range(self._v - 1))
+        znam = sum((pow(ro, i) / self.factorial(i)) for i in range(self._v))
+        znam += pow(ro, self._v) * self._v / (self.factorial(self._miu) * (self._v - ro))
         sep = self._v if self._to > self._v else self._to
 
-        for i in range(sep):
+        for i in range(sep + 1):
             yield pow(ro, i) / self.factorial(i) / znam
 
         if not self._to > self._v:
             return
 
-        for i in range(self._to - self._v):
+        for i in range(self._to - self._v + 1):
             yield pow(ro, self._v) / self.factorial(self._v) * pow(ro / self._v, i) / znam
 
     def check_stable(self):
@@ -35,7 +37,7 @@ class MMV(MMBase):
     def pt(self):
         ro = self.ro
         a = (pow(ro, self._v) / self.factorial(self._v)) * (self._v / (self._v - ro))
-        summ = sum(((pow(ro, i) / self.factorial(i)) for i in range(self._v - 1)))
+        summ = sum(((pow(ro, i) / self.factorial(i)) for i in range(self._v)))
 
         b = summ + (pow(ro, self._v) * self._v) / (self.factorial(self._v) * (self._v - ro))
         return a / b
