@@ -179,6 +179,14 @@
 	    }
 	});
 
+	app.constant('ConstTooltip', {
+		lambd: 'Лямбда - постоянная интенсивность поступления вызовов',
+		miu: 'Мю - постоянная интенсивность освобождения вызовов',
+		v: 'Количество устройств',
+		to: 'Количество источников на обслуживании',
+		n: 'Число источников нагрузки'
+	});
+
 	app.controller('tableController', function($scope, sharedProperties) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getObject();
@@ -188,14 +196,15 @@
 	    $scope.objectValue = sharedProperties.getObject().data;
 	});
 
-	app.controller('postController', function($scope, $http, sharedProperties) {
+	app.controller('postController', function($scope, $http, sharedProperties, ConstTooltip) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getModel();
 		}, function (value) {
 	        $scope.model = value;
 	    });
 
-      // create a blank object to handle form data.
+	    $scope.tooltip = ConstTooltip;
+
       	$scope.model = sharedProperties.getModel();
         $scope.form_ms = {'lambd': 1.1,
 	        				'miu': 3.2,
@@ -203,13 +212,13 @@
 							'v': 1,
 							'n': 15
 	        			};
-      // calling our submit function.
+
+        // calling our submit function.
         $scope.submitForm = function(valid) {
 	        if (!valid) {
 		        return false;
 	        }
 	    	model = sharedProperties.getModel();
-	        // Posting data to php file
 	        $http({
 	          method  : 'POST',
 	          url     : '[[ url_for("models") ]]' + $scope.model,
