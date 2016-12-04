@@ -13,7 +13,7 @@ class MMV(MMBase):
     def pk(self):
         ro = self.ro
         znam = sum((pow(ro, i) / self.factorial(i)) for i in range(self._v))
-        znam += pow(ro, self._v) * self._v / (self.factorial(self._miu) * (self._v - ro))
+        znam += pow(ro, self._v) * self._v / (self.factorial(self._v) * (self._v - ro))
         sep = self._v if self._to > self._v else self._to
 
         for i in range(sep + 1):
