@@ -75,6 +75,7 @@ html, body {
 		//height: 600px;
 		//min-height: 400px;
 		//max-height: 600px;
+		//padding-top: .7rem;
 		margin-left: 0;
 		margin-right: 0;
 		.chart-legend {
@@ -85,7 +86,7 @@ html, body {
 	}
 	.ms-table {
 		@include breakpoint(medium up) {
-			overflow-y: auto;
+			overflow-y: hidden;
 			overflow-x: hidden;
 		}
 		margin-left: 0;
@@ -114,6 +115,9 @@ html, body {
 		@include show-for(medium);
 	}
 	.tabs-dropdown-parent {
+		li.is-active {
+			background-color: #ffd70080;
+		}
 		@include show-for-only(small);
 		@include columns-pad-top;
 	}
@@ -121,13 +125,22 @@ html, body {
 		.res-parent {
 			@include tabl-graph-height;
 			@include breakpoint(small only) {
-				padding-top: 4rem;
+				//padding-top: 4rem;
+				padding-top: 10rem;
 				padding-left: 1.25rem;
 				padding-right: 1.25rem;
 			}
 		}
 		.graph-parent {
 			height: 100% - 16%; //  - 2.4375rem;
+			.valcal {
+				p {
+					@include breakpoint(small only) {
+						text-align: center;
+					}
+				}
+				padding-top: .3rem;
+			}
 		}
 		@include full-height;
 		@include breakpoint(medium up) {

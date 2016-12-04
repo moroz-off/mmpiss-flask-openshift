@@ -39,7 +39,7 @@
 					</toggle>
 					<pane>
 					  <ul class="menu vertical">
-					    <li ng-repeat="tab in tabs">
+					    <li ng-repeat="tab in tabs" ng-class="{'is-active': isActiveTab(tab)}">
 					      <a href="#" ng-click="select(tab); $close()">{{tab.title}}</a>
 					    </li>
 				        <li>
@@ -117,9 +117,13 @@
 		    	</div>
 			</div>
 			<div class="row expanded ms-tabl-graph">
-				<div class="small-12 medium-9 large-10 columns graph-parent">
-					<div class="row">
-						<p>khjkjh</p>
+				<div class="small-12 medium-9 large-10 columns graph-parent" ng-controller="MSValCal">
+					<div class="row expanded valcal">
+						<div class="large-12 columns row">
+							<div class="large-2 small-6 columns end" ng-repeat="(key, value) in valcal">
+								<p>{{valcaln[key]}}:&nbsp;{{value}}</p>
+							</div>
+						</div>
 					</div>
 					<div class="ms-chart ms-chart-content" ng-controller="MSGraph">
 				      <linechart data="data" options="options"></linechart>
@@ -149,11 +153,29 @@
 	var app = angular.module('[[ settings.angular_app_name ]]', ['mm.foundation', 'n3-line-chart']);
 
 	app.factory('sharedProperties', function() {
-	    var ms_data = {mm1: {data: [' ']},
-	    				mminf: {data: [' ']},
-	    				mmv: {data: [' ']},
-	    				mmvk: {data: [' ']},
-	    				mmvkn: {data: [' ']}
+	    var ms_data = {mm1: {data: [' '], valcal: {'km': '?',
+					                                'lq': '?',
+					                                'ws': '?',
+					                                'wq': '?',
+					                                'ro': 0
+					                            },},
+	    				mminf: {data: [' '], valcal: {'km': '?',
+					                                'wp': '?',
+					                                'ro': 0
+					                            },},
+	    				mmv: {data: [' '], valcal: {'gm': '?',
+					                                'jm': '?',
+					                                'pt': '?',
+					                                'ro': 0
+					                            },},
+	    				mmvk: {data: [' '], valcal: {'pt': '?',
+					                                'ro': 0
+					                            },},
+	    				mmvkn: {data: [' '], valcal: {'km': '?',
+					                                'tm': '?',
+					                                'pt': '?',
+					                                'pv': '?'
+					                            }}
 	    			};
 
 	    var cur_model = 'mm1';
@@ -161,6 +183,9 @@
 	    return {
 	        setObject: function(value) {
 	            ms_data[cur_model].data.push(value);
+	        },
+	        setValCalObject: function(key, value) {
+	            ms_data[cur_model].valcal[key] = value;
 	        },
 	        getObject: function() {
 	            return ms_data[cur_model];
@@ -187,6 +212,20 @@
 		n: 'Число источников нагрузки'
 	});
 
+	app.constant('ConstValCal', {
+		'ro': 'ρ',
+		'km': 'Kср',
+		'wq': 'Wq',
+		'wp': 'Wρ',
+		'ws': 'Ws',
+		'lq': 'Lq',
+		'gm': 'Yср',
+		'jm': 'Jср',
+		'pt': 'Pt',
+		'tm': 'Tср',
+		'pv': 'Pв'
+	});
+
 	app.controller('tableController', function($scope, sharedProperties) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getObject();
@@ -194,6 +233,16 @@
 	        $scope.objectValue = value.data;
 	    });
 	    $scope.objectValue = sharedProperties.getObject().data;
+	});
+
+	app.controller('MSValCal', function($scope, sharedProperties, ConstValCal) {
+	    $scope.$watch(function () {
+		    return sharedProperties.getObject();
+		}, function (value) {
+	        $scope.valcal = value.valcal;
+	    });
+	    $scope.valcal = sharedProperties.getObject().valcal;
+	    $scope.valcaln = ConstValCal;
 	});
 
 	app.controller('postController', function($scope, $http, sharedProperties, ConstTooltip) {
@@ -235,6 +284,9 @@
 						sharedProperties.clearObject();
 						for (var i = 0; i < data.data.length; i++) {
 							sharedProperties.setObject(data.data[i]);
+						}
+						for (var i in data.valcal) {
+						    sharedProperties.setValCalObject(i, data.valcal[i]);
 						}
 		          }
 	          });
