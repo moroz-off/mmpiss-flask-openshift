@@ -63,7 +63,7 @@
 												<label for="mslambd" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_lambd.$error.float}">λ</label>
 											</div>
 											<div class="small-10 large-8 end columns">
-												<input type="number" id="mslambd" ng-model="form_ms.lambd" name="ms_lambd" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_lambd.$error.float}">
+												<input type="number" id="mslambd" ng-model="form_ms.lambd" name="ms_lambd" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_lambd.$error.float}"  tooltip="{{tooltip.lambd}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -73,7 +73,7 @@
 												<label for="msmiu" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_miu.$error.float}">μ</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msmiu" ng-model="form_ms.miu" name="ms_miu" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_miu.$error.float}">
+												<input type="number" id="msmiu" ng-model="form_ms.miu" name="ms_miu" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_miu.$error.float}" tooltip="{{tooltip.miu}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -83,7 +83,7 @@
 												<label for="msto" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_to.$error.integer || msform.ms_to.$error.min}">k</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msto" ng-model="form_ms.to" name="ms_to" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_to.$error.integer || msform.ms_to.$error.min}">
+												<input type="number" id="msto" ng-model="form_ms.to" name="ms_to" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_to.$error.integer || msform.ms_to.$error.min}" tooltip="{{tooltip.to}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -93,7 +93,7 @@
 												<label for="msv" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_v.$error.integer || msform.ms_v.$error.min}">v</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msv" ng-model="form_ms.v" name="ms_v" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_v.$error.integer || msform.ms_v.$error.min}">
+												<input type="number" id="msv" ng-model="form_ms.v" name="ms_v" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_v.$error.integer || msform.ms_v.$error.min}" tooltip="{{tooltip.v}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -103,7 +103,7 @@
 												<label for="msn" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_n.$error.integer || msform.ms_n.$error.min}">n</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msn" ng-model="form_ms.n" name="ms_n" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_n.$error.integer || msform.ms_n.$error.min}">
+												<input type="number" id="msn" ng-model="form_ms.n" name="ms_n" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_n.$error.integer || msform.ms_n.$error.min}" tooltip="{{tooltip.n}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
