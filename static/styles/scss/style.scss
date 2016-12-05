@@ -26,13 +26,13 @@
 	min-height: 100%;
 }
 
-@mixin tabl-graph-height() {
-	$height: 100% - 10%; //  - 2.4375rem;
-	$height-large: 100% - 5%;
+@mixin tabl-graph-height($mh:15%) {
+	$height-small: 100% - 10%; //  - 2.4375rem;
+	$height-large: 100% - $mh; // -5%
 	@include breakpoint(small up) { //@media #{$small-up} { - foundation 5 < 6.3
-		height: $height;
-		max-height: $height;
-		min-height: $height;
+		height: $height-small;
+		max-height: $height-small;
+		min-height: $height-small;
 	}
 	@include breakpoint(large up) { //@media #{$large-up} { - foundation 5 < 6.3
 		height: $height-large;
@@ -46,6 +46,10 @@
 
 @mixin columns-pad-top() {
 	padding-top: .625rem;
+}
+
+@mixin material-box-shadow() {
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.13),0 1px 5px 0 rgba(0,0,0,0.08);
 }
 
 
@@ -86,31 +90,50 @@ html, body {
 	}
 	.ms-table {
 		@include breakpoint(medium up) {
-			overflow-y: hidden;
+			overflow-y: auto;
 			overflow-x: hidden;
 		}
+		@include material-box-shadow();
 		margin-left: 0;
-		height: 100%;
-		padding-bottom: .625rem;
+		@include full-height;
 		table {
 			@include full-height;
 			@include breakpoint(small only) {
 				tbody {
-				    overflow-y: auto;
+					overflow-y: hidden;
 					overflow-x: hidden;
 					display: block;
 				}
-				thead {
-					display: block;
+				margin-bottom: 1rem;
+			}
+			thead {
+				display: block;
+				border-bottom: .3rem solid #e0e0e0;
+				tr {
+					margin-bottom: 0px;
 				}
 			}
+			tbody {
+				tr {
+					margin-bottom: 0px;
+				}
+				height: auto;
+			}
+			margin-bottom: 0rem;
+			background-color: #fff;
 		}
 	}
-	@include tabl-graph-height;
+	@include tabl-graph-height();
 }
 
 .main {
 	.tabs-parent {
+		.tabs {
+			border: 0px;
+		}
+		box-shadow: 0 0px 2px 0 rgba(0,0,0,0.8);
+		border-collapse: collapse;
+		border-spacing: 0;
 		@include full-height;
 		@include show-for(medium);
 	}
@@ -118,29 +141,58 @@ html, body {
 		li.is-active {
 			background-color: #ffd70080;
 		}
+		button, .button {
+			@include material-box-shadow();
+		}
 		@include show-for-only(small);
 		@include columns-pad-top;
 	}
+	.callout {
+		padding-bottom: 0;
+		p {
+			color: rgba(0,0,0,0.54);
+		}
+	}
 	.content {
 		.res-parent {
-			@include tabl-graph-height;
+			@include tabl-graph-height(10%);
 			@include breakpoint(small only) {
 				//padding-top: 4rem;
-				padding-top: 10rem;
+				padding-top: 2rem; //10rem
 				padding-left: 1.25rem;
 				padding-right: 1.25rem;
 			}
 		}
 		.graph-parent {
-			height: 100% - 16%; //  - 2.4375rem;
-			.valcal {
-				p {
-					@include breakpoint(small only) {
-						text-align: center;
-					}
-				}
-				padding-top: .3rem;
+			height: 100% - 11%; //  - 2.4375rem; -16%
+			padding-top: 1rem;
+		}
+		.inputs {
+			@include breakpoint(medium up) {
+				padding-left: 0 !important;
 			}
+		}
+		.sub-button {
+			@include breakpoint(medium up) {
+				//padding-left: 0 !important;
+				padding-right: .445rem !important;
+			}
+			@include breakpoint(small only) {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+				padding-top: 0.9rem;
+			}
+			button {
+				@include material-box-shadow();
+			}
+		}
+		.valcal {
+			p {
+				@include breakpoint(small only) {
+					text-align: center;
+				}
+			}
+			padding-top: .3rem;
 		}
 		@include full-height;
 		@include breakpoint(medium up) {
@@ -166,11 +218,11 @@ html, body {
 		padding-left: 0.2rem;
 	}
 	label.middle {
-	    margin: 0 0 1rem;
-        padding-top: 0.8rem;
-        padding-right: 0px;
-        padding-bottom: 0.8rem;
-        padding-left: 0px;
+	    margin: 0 0 0rem;
+	    padding-top: 0.8rem;
+	    padding-right: 0px;
+	    //padding-bottom: 0.8rem;
+	    padding-left: 0px;
     }
 	@include full-height;
 }

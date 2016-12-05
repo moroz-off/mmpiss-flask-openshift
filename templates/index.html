@@ -55,7 +55,7 @@
 		    	<div class="small-12 columns no-padding">
 					<form name="msform" ng-submit="submitForm(msform.$valid)" ng-controller="postController" novalidate>
 						<div class="row expanded">
-							<div class="small-12 medium-12 large-10 columns">
+							<div class="small-12 medium-12 large-10 columns inputs">
 								<div class="row expanded large-collapse">
 									<div class="small-12 medium-4 large-2 columns">
 										<div class="row">
@@ -109,22 +109,24 @@
 									</div>
 								</div>
 							</div>
-							<div class="small-12 large-2 columns">
+							<div class="small-12 large-2 columns sub-button">
 							  <button class="success button expanded" type="submit" href="#" ng-class="{'disabled': !msform.$valid}">Построить</button>
 							</div>
 						</div>
 			    	</form>
 		    	</div>
 			</div>
-			<div class="row expanded ms-tabl-graph">
-				<div class="small-12 medium-9 large-10 columns graph-parent" ng-controller="MSValCal">
-					<div class="row expanded valcal">
-						<div class="large-12 columns row">
-							<div class="large-2 small-6 columns end" ng-repeat="(key, value) in valcal">
-								<p>{{valcaln[key]}}:&nbsp;{{value}}</p>
-							</div>
+			<div class="row expanded valcal" ng-controller="MSValCal">
+				<div class="small-12 columns">
+					<div class="callout row expanded">
+						<div class="large-2 small-6 columns end" ng-repeat="(key, value) in valcal">
+							<p>{{valcaln[key]}}:&nbsp;{{value}}</p>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="row expanded ms-tabl-graph">
+				<div class="small-12 medium-9 large-10 columns graph-parent">
 					<div class="ms-chart ms-chart-content" ng-controller="MSGraph">
 				      <linechart data="data" options="options"></linechart>
 				    </div>
