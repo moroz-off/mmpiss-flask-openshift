@@ -7,7 +7,7 @@
 
 @include foundation-global-styles;
 @include foundation-grid;
-@include foundation-tooltip;
+//@include foundation-tooltip;
 @include foundation-typography;
 @include foundation-tabs;
 @include foundation-table;
@@ -26,13 +26,13 @@
 	min-height: 100%;
 }
 
-@mixin tabl-graph-height() {
-	$height: 100% - 10%; //  - 2.4375rem;
-	$height-large: 100% - 5%;
+@mixin tabl-graph-height($mh:10%) {
+	$height-small: 100% - 10%; //  - 2.4375rem;
+	$height-large: 100% - $mh; // -5%
 	@include breakpoint(small up) { //@media #{$small-up} { - foundation 5 < 6.3
-		height: $height;
-		max-height: $height;
-		min-height: $height;
+		height: $height-small;
+		max-height: $height-small;
+		min-height: $height-small;
 	}
 	@include breakpoint(large up) { //@media #{$large-up} { - foundation 5 < 6.3
 		height: $height-large;
@@ -40,12 +40,18 @@
 		min-height: $height-large;
 	}
 	@include breakpoint(medium only) { //@media #{$large-up} { - foundation 5 < 6.3
-		@include full-height;
+		height: $height-large;
+		max-height: $height-large;
+		min-height: $height-large;
 	}
 }
 
 @mixin columns-pad-top() {
 	padding-top: .625rem;
+}
+
+@mixin material-box-shadow() {
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.13),0 1px 5px 0 rgba(0,0,0,0.08);
 }
 
 
@@ -75,6 +81,7 @@ html, body {
 		//height: 600px;
 		//min-height: 400px;
 		//max-height: 600px;
+		//padding-top: .7rem;
 		margin-left: 0;
 		margin-right: 0;
 		.chart-legend {
@@ -88,46 +95,109 @@ html, body {
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
+		@include material-box-shadow();
 		margin-left: 0;
-		height: 100%;
-		padding-bottom: .625rem;
+		@include full-height;
 		table {
 			@include full-height;
 			@include breakpoint(small only) {
 				tbody {
-				    overflow-y: auto;
+					overflow-y: hidden;
 					overflow-x: hidden;
 					display: block;
 				}
-				thead {
-					display: block;
+				margin-bottom: 1rem;
+			}
+			thead {
+				display: block;
+				border-bottom: .3rem solid #e0e0e0;
+				tr {
+					margin-bottom: 0px;
 				}
 			}
+			tbody {
+				tr {
+					margin-bottom: 0px;
+				}
+				height: auto;
+			}
+			margin-bottom: 0rem;
+			background-color: #fff;
 		}
 	}
-	@include tabl-graph-height;
+	@include tabl-graph-height();
 }
 
 .main {
 	.tabs-parent {
+		.tabs {
+			border: 0px;
+		}
+		box-shadow: 0 0px 2px 0 rgba(0,0,0,0.8);
+		border-collapse: collapse;
+		border-spacing: 0;
 		@include full-height;
 		@include show-for(medium);
 	}
 	.tabs-dropdown-parent {
+		li.is-active {
+			background-color: #ffd70080;
+		}
+		button, .button {
+			@include material-box-shadow();
+		}
 		@include show-for-only(small);
 		@include columns-pad-top;
 	}
+	.callout {
+		padding-bottom: 0;
+		p {
+			color: rgba(0,0,0,0.54);
+			line-height: 1.1 !important;
+		}
+	}
 	.content {
 		.res-parent {
-			@include tabl-graph-height;
+			@include tabl-graph-height(8%);
 			@include breakpoint(small only) {
-				padding-top: 4rem;
+				//padding-top: 4rem;
+				padding-top: 2rem; //10rem
 				padding-left: 1.25rem;
 				padding-right: 1.25rem;
 			}
 		}
 		.graph-parent {
-			height: 100% - 16%; //  - 2.4375rem;
+			height: 100% - 11%; //  - 2.4375rem; -16%
+			padding-top: 1rem;
+		}
+		.inputs {
+			@include breakpoint(medium up) {
+				padding-left: 0 !important;
+			}
+		}
+		.sub-button {
+			@include breakpoint(medium up) {
+				//padding-left: 0 !important;
+				padding-right: .445rem !important;
+			}
+			@include breakpoint(small only) {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+				padding-top: 0.9rem;
+			}
+			@include breakpoint(medium only) {
+				padding-left: .445rem !important;
+			}
+			button {
+				@include material-box-shadow();
+			}
+		}
+		.valcal {
+			p {
+				@include breakpoint(small only) {
+					text-align: center;
+				}
+			}
 		}
 		@include full-height;
 		@include breakpoint(medium up) {
@@ -147,17 +217,20 @@ html, body {
 		border-color: #e51c23;
 	}
 	input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], input[type="color"] {
-		padding-top: 1rem;
+		padding-top: .48rem;
 		padding-right: 0rem;
-		padding-bottom: 0.3rem;
+		padding-bottom: 0.01rem;
 		padding-left: 0.2rem;
+		height: 2.04375rem;
+		margin-top: 0.2rem;
 	}
 	label.middle {
-	    margin: 0 0 1rem;
-        padding-top: 0.8rem;
-        padding-right: 0px;
-        padding-bottom: 0.8rem;
-        padding-left: 0px;
+	    margin: 0 0 0rem;
+	    padding-top: 0.6rem;
+	    padding-right: 0px;
+	    //padding-bottom: 0.8rem;
+	    padding-left: 0px;
+	    font-size: 1.17rem;
     }
 	@include full-height;
 }

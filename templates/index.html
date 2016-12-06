@@ -39,7 +39,7 @@
 					</toggle>
 					<pane>
 					  <ul class="menu vertical">
-					    <li ng-repeat="tab in tabs">
+					    <li ng-repeat="tab in tabs" ng-class="{'is-active': isActiveTab(tab)}">
 					      <a href="#" ng-click="select(tab); $close()">{{tab.title}}</a>
 					    </li>
 				        <li>
@@ -55,7 +55,7 @@
 		    	<div class="small-12 columns no-padding">
 					<form name="msform" ng-submit="submitForm(msform.$valid)" ng-controller="postController" novalidate>
 						<div class="row expanded">
-							<div class="small-12 medium-12 large-10 columns">
+							<div class="small-12 medium-12 large-10 columns inputs">
 								<div class="row expanded large-collapse">
 									<div class="small-12 medium-4 large-2 columns">
 										<div class="row">
@@ -63,7 +63,7 @@
 												<label for="mslambd" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_lambd.$error.float}">λ</label>
 											</div>
 											<div class="small-10 large-8 end columns">
-												<input type="number" id="mslambd" ng-model="form_ms.lambd" name="ms_lambd" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_lambd.$error.float}">
+												<input type="number" id="mslambd" ng-model="form_ms.lambd" name="ms_lambd" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_lambd.$error.float}"  tooltip="{{tooltip.lambd}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -73,7 +73,7 @@
 												<label for="msmiu" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_miu.$error.float}">μ</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msmiu" ng-model="form_ms.miu" name="ms_miu" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_miu.$error.float}">
+												<input type="number" id="msmiu" ng-model="form_ms.miu" name="ms_miu" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_miu.$error.float}" tooltip="{{tooltip.miu}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -83,7 +83,7 @@
 												<label for="msto" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_to.$error.integer || msform.ms_to.$error.min}">k</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msto" ng-model="form_ms.to" name="ms_to" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_to.$error.integer || msform.ms_to.$error.min}">
+												<input type="number" id="msto" ng-model="form_ms.to" name="ms_to" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_to.$error.integer || msform.ms_to.$error.min}" tooltip="{{tooltip.to}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -93,7 +93,7 @@
 												<label for="msv" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_v.$error.integer || msform.ms_v.$error.min}">v</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msv" ng-model="form_ms.v" name="ms_v" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_v.$error.integer || msform.ms_v.$error.min}">
+												<input type="number" id="msv" ng-model="form_ms.v" name="ms_v" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_v.$error.integer || msform.ms_v.$error.min}" tooltip="{{tooltip.v}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
@@ -103,24 +103,30 @@
 												<label for="msn" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_n.$error.integer || msform.ms_n.$error.min}">n</label>
 											</div>
 											<div class="small-10 large-8 columns">
-												<input type="number" id="msn" ng-model="form_ms.n" name="ms_n" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_n.$error.integer || msform.ms_n.$error.min}">
+												<input type="number" id="msn" ng-model="form_ms.n" name="ms_n" min="1" integer placeholder="Int > 0" ng-class="{'is-invalid-input': msform.ms_n.$error.integer || msform.ms_n.$error.min}" tooltip="{{tooltip.n}}"  tooltip-trigger="focus" tooltip-placement="bottom">
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="small-12 large-2 columns">
+							<div class="small-12 large-2 columns sub-button">
 							  <button class="success button expanded" type="submit" href="#" ng-class="{'disabled': !msform.$valid}">Построить</button>
 							</div>
 						</div>
 			    	</form>
 		    	</div>
 			</div>
+			<div class="row expanded valcal" ng-controller="MSValCal">
+				<div class="small-12 columns">
+					<div class="callout row expanded">
+						<div class="large-2 medium-2 small-6 columns end" ng-repeat="(key, value) in valcal">
+							<p>{{valcaln[key]}}:&nbsp;{{value}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="row expanded ms-tabl-graph">
 				<div class="small-12 medium-9 large-10 columns graph-parent">
-					<div class="row">
-						<p>khjkjh</p>
-					</div>
 					<div class="ms-chart ms-chart-content" ng-controller="MSGraph">
 				      <linechart data="data" options="options"></linechart>
 				    </div>
@@ -149,11 +155,29 @@
 	var app = angular.module('[[ settings.angular_app_name ]]', ['mm.foundation', 'n3-line-chart']);
 
 	app.factory('sharedProperties', function() {
-	    var ms_data = {mm1: {data: [' ']},
-	    				mminf: {data: [' ']},
-	    				mmv: {data: [' ']},
-	    				mmvk: {data: [' ']},
-	    				mmvkn: {data: [' ']}
+	    var ms_data = {mm1: {data: [' '], valcal: {'km': '?',
+					                                'lq': '?',
+					                                'ws': '?',
+					                                'wq': '?',
+					                                'ro': 0
+					                            },},
+	    				mminf: {data: [' '], valcal: {'km': '?',
+					                                'wp': '?',
+					                                'ro': 0
+					                            },},
+	    				mmv: {data: [' '], valcal: {'gm': '?',
+					                                'jm': '?',
+					                                'pt': '?',
+					                                'ro': 0
+					                            },},
+	    				mmvk: {data: [' '], valcal: {'pt': '?',
+					                                'ro': 0
+					                            },},
+	    				mmvkn: {data: [' '], valcal: {'km': '?',
+					                                'tm': '?',
+					                                'pt': '?',
+					                                'pv': '?'
+					                            }}
 	    			};
 
 	    var cur_model = 'mm1';
@@ -161,6 +185,9 @@
 	    return {
 	        setObject: function(value) {
 	            ms_data[cur_model].data.push(value);
+	        },
+	        setValCalObject: function(key, value) {
+	            ms_data[cur_model].valcal[key] = value;
 	        },
 	        getObject: function() {
 	            return ms_data[cur_model];
@@ -187,6 +214,20 @@
 		n: 'Число источников нагрузки'
 	});
 
+	app.constant('ConstValCal', {
+		'ro': 'ρ',
+		'km': 'Kср',
+		'wq': 'Wq',
+		'wp': 'Wρ',
+		'ws': 'Ws',
+		'lq': 'Lq',
+		'gm': 'Yср',
+		'jm': 'Jср',
+		'pt': 'Pt',
+		'tm': 'Tср',
+		'pv': 'Pв'
+	});
+
 	app.controller('tableController', function($scope, sharedProperties) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getObject();
@@ -194,6 +235,16 @@
 	        $scope.objectValue = value.data;
 	    });
 	    $scope.objectValue = sharedProperties.getObject().data;
+	});
+
+	app.controller('MSValCal', function($scope, sharedProperties, ConstValCal) {
+	    $scope.$watch(function () {
+		    return sharedProperties.getObject();
+		}, function (value) {
+	        $scope.valcal = value.valcal;
+	    });
+	    $scope.valcal = sharedProperties.getObject().valcal;
+	    $scope.valcaln = ConstValCal;
 	});
 
 	app.controller('postController', function($scope, $http, sharedProperties, ConstTooltip) {
@@ -235,6 +286,9 @@
 						sharedProperties.clearObject();
 						for (var i = 0; i < data.data.length; i++) {
 							sharedProperties.setObject(data.data[i]);
+						}
+						for (var i in data.valcal) {
+						    sharedProperties.setValCalObject(i, data.valcal[i]);
 						}
 		          }
 	          });

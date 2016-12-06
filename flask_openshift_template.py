@@ -23,6 +23,64 @@ def index():
                            static_css=static_css, static_js=static_js, url_for=url_for)
 
 
+def json_mm1(*args):
+    ms = mm1.MM1(*args)
+    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
+                    'check': ms.check_stable(),
+                    'valcal': {'km': round(ms.k_mean(), 5),
+                               'lq': round(ms.lq(), 5),
+                               'ws': round(ms.ws(), 5),
+                               'wq': round(ms.wq(), 5),
+                               'ro': round(ms.ro, 5)
+                               }
+                    })
+
+
+def json_mminf(*args):
+    ms = mminf.MMinf(*args)
+    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
+                    'check': ms.check_stable(),
+                    'valcal': {'km': round(ms.k_mean(), 5),
+                               'wp': round(ms.w_ro(), 5),
+                               'ro': round(ms.ro, 5)
+                               }
+                    })
+
+
+def json_mmv(*args):
+    ms = mmv.MMV(*args)
+    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
+                    'check': ms.check_stable(),
+                    'valcal': {'gm': round(ms.gamma_mean(), 5),
+                               'jm': round(ms.j_mean(), 5),
+                               'pt': round(ms.pt(), 5),
+                               'ro': round(ms.ro, 5)
+                               }
+                    })
+
+
+def json_mmvk(*args):
+    ms = mmvk.MMVK(*args)
+    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
+                    'check': ms.check_stable(),
+                    'valcal': {'pt': round(ms.pt(), 5),
+                               'ro': round(ms.ro, 5)
+                               }
+                    })
+
+
+def json_mmvkn(*args):
+    ms = mmvkn.MMVKN(*args)
+    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
+                    'check': ms.check_stable(),
+                    'valcal': {'km': round(ms.k_mean(), 5),
+                               'tm': round(ms.t_mean(), 5),
+                               'pt': round(ms.pt(), 5),
+                               'pv': round(ms.pv(), 5),
+                               }
+                    })
+
+
 @app.route("/models/")
 @app.route("/models/<model>", methods=["PUT", "POST"])
 def models(model=None):
@@ -34,25 +92,16 @@ def models(model=None):
         data = request.form
     base_args = (float(data['lambd']), float(data['miu']), int(data['to']))
     if model == 'mm1':
-        return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(mm1.MM1(*base_args).pk))})
-        # return jsonify({'data': []})
-        # return mm1.MM1(*base_args).get_json()
+        return json_mm1(*base_args)
     if model == 'mminf':
-        return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(mminf.MMinf(*base_args).pk))})
-        # return mminf.MMinf(*base_args).get_json()
+        return json_mminf(*base_args)
     if model == 'mmv':
-        return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(mmv.MMV(int(data['v']), *base_args).pk))})
-        # return mmv.MMV(int(request.form['v']), *base_args).get_json()
+        return json_mmv(int(data['v']), *base_args)
     if model == 'mmvk':
-        return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(mmvk.MMVK(int(data['v']), *base_args).pk))})
-        # return mmvk.MMVK(int(request.form['v']), *base_args).get_json()
+        return json_mmvk(int(data['v']), *base_args)
     if model == 'mmvkn':
-        # return mmvkn.MMVKN(int(request.form['v']), float(request.form['lambd']),
-        #                    float(request.form['miu']), int(request.form['to']),
-        #                    float(request.form['n'])).get_json()
-        init_mmvkn = mmvkn.MMVKN(int(data['v']), float(data['lambd']),
-                                 float(data['miu']), int(data['to']), int(data['n']))
-        return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(init_mmvkn.pk))})
+        return json_mmvkn(int(data['v']), float(data['lambd']),
+                          float(data['miu']), int(data['to']), int(data['n']))
 
 
 if __name__ == '__main__':
