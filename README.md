@@ -5,14 +5,14 @@ This is a template to host in [OpenShift](https://openshift.redhat.com) a Python
 ### Используемые технологии
 
 **Back end:**
-    &nbsp;&nbsp;&nbsp;&nbsp;- [Python](https://www.python.org/) 3.3, 
+    &nbsp;&nbsp;&nbsp;&nbsp;- [Python](https://www.python.org/) 3.3,<br> 
     &nbsp;&nbsp;&nbsp;&nbsp;- [Flask](http://flask.pocoo.org/) microframework
 
 **Front end:**
-    &nbsp;&nbsp;&nbsp;&nbsp;- [AngularJS](https://angularjs.org/)  1.5.3, 
-    &nbsp;&nbsp;&nbsp;&nbsp;- Foundation for Sites ([Foundation 6](https://github.com/zurb/foundation-sites)), 
-    &nbsp;&nbsp;&nbsp;&nbsp;- [Material Design](https://github.com/eucalyptuss/material-foundation) version of Foudation for Sites by Zurb, 
-    &nbsp;&nbsp;&nbsp;&nbsp;- [Foundation 6 directives for Angular](https://github.com/circlingthesun/angular-foundation-6) 1.5+,
+    &nbsp;&nbsp;&nbsp;&nbsp;- [AngularJS](https://angularjs.org/)  1.5.3,<br> 
+    &nbsp;&nbsp;&nbsp;&nbsp;- Foundation for Sites ([Foundation 6](https://github.com/zurb/foundation-sites)),<br> 
+    &nbsp;&nbsp;&nbsp;&nbsp;- [Material Design](https://github.com/eucalyptuss/material-foundation) version of Foudation for Sites by Zurb,<br> 
+    &nbsp;&nbsp;&nbsp;&nbsp;- [Foundation 6 directives for Angular](https://github.com/circlingthesun/angular-foundation-6) 1.5+,<br>
     &nbsp;&nbsp;&nbsp;&nbsp;- [n3-line-chart](https://github.com/n3-charts/line-chart) is an easy-to-use JavaScript library for creating beautiful charts in [AngularJS](https://angularjs.org/) applications and it is built on top of [D3.js](https://d3js.org/)
 
 [Sass](http://sass-lang.com/) (SCSS) - Syntactically Awesome Style Sheets,
