@@ -4,11 +4,11 @@ This is a template to host in [OpenShift](https://openshift.redhat.com) a Python
 
 ### Используемые технологии
 
-**Back end:**
+**Back end:**<br>
     &nbsp;&nbsp;&nbsp;&nbsp;- [Python](https://www.python.org/) 3.3,<br> 
     &nbsp;&nbsp;&nbsp;&nbsp;- [Flask](http://flask.pocoo.org/) microframework
 
-**Front end:**
+**Front end:**<br>
     &nbsp;&nbsp;&nbsp;&nbsp;- [AngularJS](https://angularjs.org/)  1.5.3,<br> 
     &nbsp;&nbsp;&nbsp;&nbsp;- Foundation for Sites ([Foundation 6](https://github.com/zurb/foundation-sites)),<br> 
     &nbsp;&nbsp;&nbsp;&nbsp;- [Material Design](https://github.com/eucalyptuss/material-foundation) version of Foudation for Sites by Zurb,<br> 
