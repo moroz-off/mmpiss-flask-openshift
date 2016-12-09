@@ -49,7 +49,8 @@ def json_mminf(*args):
 
 def json_mmv(*args):
     ms = mmv.MMV(*args)
-    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
+    pk = sorted(set(ms.pk), reverse=True)
+    return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(pk)),
                     'check': ms.check_stable(),
                     'valcal': {'gm': round(ms.gamma_mean(), 5),
                                'jm': round(ms.j_mean(), 5),
