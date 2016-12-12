@@ -313,11 +313,6 @@
 		}, function (value) {
 			$scope.data.dataset0 = value.data;
 		});
-		$scope.$watch(function () {
-		    return sharedProperties.getModel();
-		}, function (value) {
-			$scope.options.series[0].label = value;
-		});
 
 		$scope.data = {
 			dataset0: sharedProperties.getObject().data
@@ -329,7 +324,7 @@
 			    axis: "y",
 			    dataset: "dataset0",
 			    key: "y",
-			    label: sharedProperties.getModel(),
+			    label: "P(k)",
 			    color: "#1f77b4",
 			    type: ['line', 'dot', 'area'],
 			    id: 'mySeries0'
