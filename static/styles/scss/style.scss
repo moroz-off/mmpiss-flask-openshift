@@ -159,7 +159,7 @@ html, body {
 	}
 	.content {
 		.res-parent {
-			@include tabl-graph-height(8%);
+			@include tabl-graph-height(9%);
 			@include breakpoint(small only) {
 				//padding-top: 4rem;
 				padding-top: 2rem; //10rem
