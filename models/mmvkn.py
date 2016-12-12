@@ -26,6 +26,7 @@ class MMVKN(MMBase):
         self._val_pk = tuple(self._pk())
         return self._val_pk
 
+    @property
     def check_stable(self):
         return self._miu > 0 and self._a / ((1 - self._a) * self._v) and self._n >= self._to and self._v < self._n
 

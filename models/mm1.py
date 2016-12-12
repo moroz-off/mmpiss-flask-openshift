@@ -13,6 +13,7 @@ class MM1(MMBase):
         for i in range(self._to):
             yield (1 - ro) * pow(ro, i)
 
+    @property
     def check_stable(self):
         return self._lambd / self._miu < 1
 

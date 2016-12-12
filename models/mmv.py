@@ -25,6 +25,7 @@ class MMV(MMBase):
         for i in range(self._to - self._v + 1):
             yield pow(ro, self._v) / self.factorial(self._v) * pow(ro / self._v, i) / znam
 
+    @property
     def check_stable(self):
         return self.ro / self._v <= 1 and self._to >= self._v
 

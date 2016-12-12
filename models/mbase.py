@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
-from json import dumps
 from math import factorial
 
 
@@ -18,15 +17,13 @@ class MMBase(object):
     def pk(self):
         yield ()
 
+    @property
     def check_stable(self):
-        raise NotImplementedError()
+        return self._miu > 0
 
     @staticmethod
     def factorial(x):
         return float(factorial(x))
 
-    def get_json(self):
-        return dumps(tuple(self.pk))
-
     def __bool__(self):
-        return self.check_stable()
+        return self.check_stable

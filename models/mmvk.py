@@ -17,6 +17,7 @@ class MMVK(MMBase):
         for i in range(self._to + 1):
             yield (pow(ro, i) / self.factorial(i)) / div2
 
+    @property
     def check_stable(self):
         return self.ro / self._v <= 1
 

@@ -13,6 +13,7 @@ class MMinf(MMBase):
         for i in range(self._to):
             yield pow(ro, i) / self.factorial(i) * exp(-ro)
 
+    @property
     def check_stable(self):
         return self._miu > 0
 
