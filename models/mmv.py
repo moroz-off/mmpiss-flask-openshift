@@ -26,7 +26,7 @@ class MMV(MMBase):
             yield pow(ro, self._v) / self.factorial(self._v) * pow(ro / self._v, i) / znam
 
     def check_stable(self):
-        return self.ro / self._v <= 1
+        return self.ro / self._v <= 1 and self._to >= self._v
 
     def gamma_mean(self):
         return 1 / (self._miu * (self._v - self.ro))
