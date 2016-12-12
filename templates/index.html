@@ -123,6 +123,11 @@
 							  <button class="success button expanded" type="submit" href="#" ng-class="{'disabled': !msform.$valid}">Построить</button>
 							</div>
 						</div>
+                        <script type="text/ng-template" id="MSModalContent.html">
+                            <h3>[[ lang.modal_head_error_msg ]]</h3>
+                            <p>{{ error_msg }}</p>
+                            <button class="button" ng-click="ok()">[[ lang.modal_ok_button ]]</button>
+                        </script>
 			    	</form>
 		    	</div>
 			</div>
@@ -225,6 +230,15 @@
 		a: 'Удельная нагрузка, каждого вызова на систему'
 	});
 
+    app.constant('ConstErrorMsg', {
+        mm1: '[[ lang.modal_mm1_error_msg ]]',
+        mminf: '[[ lang.modal_mminf_error_msg ]]',
+        mmv: '[[ lang.modal_mmv_error_msg  ]]',
+        mmvk: '[[ lang.modal_mmvk_error_msg ]]',
+        mmvkn: '[[ lang.modal_mmvkn_error_msg ]]',
+        se: '[[ lang.modal_server_error_msg ]]'
+    });
+
 	app.constant('ConstValCal', {
 		'ro': 'ρ',
 		'km': 'Kср',
@@ -258,7 +272,7 @@
 	    $scope.valcaln = ConstValCal;
 	});
 
-	app.controller('postController', function($scope, $http, sharedProperties, ConstTooltip) {
+	app.controller('postController', function($scope, $http, $modal, sharedProperties, ConstTooltip, ConstErrorMsg) {
 	    $scope.$watch(function () {
 		    return sharedProperties.getModel();
 		}, function (value) {
@@ -276,12 +290,44 @@
 							'a': 0.3
 	        			};
 
+        $scope.modal_open = modal_open;
+
+        function modal_open(size, se) {
+            if (!se) {
+                $scope.error_msg = ConstErrorMsg[$scope.model];
+            }
+            else {
+                $scope.error_msg = ConstErrorMsg['se'];
+            }
+
+            var params = {
+                templateUrl: 'MSModalContent.html',
+                resolve: {
+                    error_msg: function () {
+                        return $scope.error_msg;
+                    }
+                },
+                controller: function ($scope, $modalInstance, error_msg) {
+                    $scope.error_msg = error_msg;
+
+                    $scope.ok = function () {
+                        $modalInstance.close();
+                    };
+                }
+            };
+
+            if (angular.isDefined(size)) {
+                params.size = size;
+            }
+
+            $modal.open(params);
+        }
+
         // calling our submit function.
         $scope.submitForm = function(valid) {
 	        if (!valid) {
 		        return false;
 	        }
-	    	model = sharedProperties.getModel();
 	        $http({
 	          method  : 'POST',
 	          url     : '[[ url_for("models") ]]' + $scope.model,
@@ -289,26 +335,27 @@
 	          headers : {'Content-Type': 'application/json'}
 	         })
 	          .success(function(data) {
-					if (data.errors || !data.data) {
-					// Showing errors.
-						$scope.errorName = data.errors.name;
-						$scope.errorUserName = data.errors.username;
-						$scope.errorEmail = data.errors.email;
-					} else {
-						sharedProperties.clearObject();
-						for (var i = 0; i < data.data.length; i++) {
-							sharedProperties.setObject(data.data[i]);
-						}
-						for (var i in data.valcal) {
-						    sharedProperties.setValCalObject(i, data.valcal[i]);
-						}
-		          }
-	          });
+                    sharedProperties.clearObject();
+                    for (var i = 0; i < data.data.length; i++) {
+                        sharedProperties.setObject(data.data[i]);
+                    }
+                    for (var i in data.valcal) {
+                        sharedProperties.setValCalObject(i, data.valcal[i]);
+                    }
+	          })
+              .error(function (data, error) {
+                    if (error == "412") {
+                        $scope.modal_open('tiny');
+                    }
+                    else {
+                        $scope.modal_open('tiny', true);
+                    }
+            })
         };
     });
 
     app.controller('MSGraph', function($scope, sharedProperties) {
-		$scope.$watch(function () {
+        $scope.$watch(function () {
 		    return sharedProperties.getObject();
 		}, function (value) {
 			$scope.data.dataset0 = value.data;

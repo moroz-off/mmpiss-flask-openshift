@@ -26,7 +26,7 @@ def index():
 def json_mm1(*args):
     ms = mm1.MM1(*args)
     if not ms:
-        return jsonify({})
+        return jsonify({}), 412
     return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
                     'valcal': {'km': round(ms.k_mean(), 5),
                                'lq': round(ms.lq(), 5),
@@ -40,7 +40,7 @@ def json_mm1(*args):
 def json_mminf(*args):
     ms = mminf.MMinf(*args)
     if not ms:
-        return jsonify({})
+        return jsonify({}), 412
     return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
                     'valcal': {'km': round(ms.k_mean(), 5),
                                'wp': round(ms.w_ro(), 5),
@@ -52,7 +52,7 @@ def json_mminf(*args):
 def json_mmv(*args):
     ms = mmv.MMV(*args)
     if not ms:
-        return jsonify({})
+        return jsonify({}), 412
     pk = sorted(set(ms.pk), reverse=True)
     return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(pk)),
                     'valcal': {'gm': round(ms.gamma_mean(), 5),
@@ -66,7 +66,7 @@ def json_mmv(*args):
 def json_mmvk(*args):
     ms = mmvk.MMVK(*args)
     if not ms:
-        return jsonify({})
+        return jsonify({}), 412
     return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
                     'valcal': {'pt': round(ms.pt(), 5),
                                'ro': round(ms.ro, 5)
@@ -77,7 +77,7 @@ def json_mmvk(*args):
 def json_mmvkn(*args):
     ms = mmvkn.MMVKN(*args)
     if not ms:
-        return jsonify({})
+        return jsonify({}), 412
     return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(ms.pk)),
                     'valcal': {'km': round(ms.k_mean(), 5),
                                'tm': round(ms.t_mean(), 5),
