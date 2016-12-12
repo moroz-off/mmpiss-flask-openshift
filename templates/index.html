@@ -57,8 +57,18 @@
 						<div class="row expanded">
 							<div class="small-12 medium-12 large-10 columns inputs">
 								<div class="row expanded large-collapse">
+									<div class="small-12 medium-4 large-2 columns end">
+										<div class="row" ng-show="model == 'mmvkn'">
+											<div class="small-2 columns">
+												<label for="msa" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_a.$error.float}">a</label>
+											</div>
+											<div class="small-10 large-8 columns">
+												<input type="number" id="msa" ng-model="form_ms.a" name="ms_a" max="1.0" float placeholder="Float > 0" ng-class="{'is-invalid-input': msform.ms_a.$error.float}" tooltip="{{tooltip.a}}"  tooltip-trigger="focus" tooltip-placement="bottom">
+											</div>
+										</div>
+									</div>
 									<div class="small-12 medium-4 large-2 columns">
-										<div class="row">
+										<div class="row" ng-show="model != 'mmvkn'">
 											<div class="small-2 columns">
 												<label for="mslambd" class="text-left middle" ng-class="{'is-invalid-label': msform.ms_lambd.$error.float}">λ</label>
 											</div>
@@ -211,7 +221,8 @@
 		miu: 'Мю - постоянная интенсивность освобождения вызовов',
 		v: 'Количество устройств',
 		to: 'Количество источников на обслуживании',
-		n: 'Число источников нагрузки'
+		n: 'Число источников нагрузки',
+		a: 'Удельная нагрузка, каждого вызова на систему'
 	});
 
 	app.constant('ConstValCal', {
@@ -261,7 +272,8 @@
 	        				'miu': 3.2,
 	        				'to': 15,
 							'v': 1,
-							'n': 15
+							'n': 15,
+							'a': 0.3
 	        			};
 
         // calling our submit function.

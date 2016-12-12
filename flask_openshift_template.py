@@ -101,7 +101,7 @@ def models(model=None):
     if model == 'mmvk':
         return json_mmvk(int(data['v']), *base_args)
     if model == 'mmvkn':
-        return json_mmvkn(int(data['v']), float(data['lambd']),
+        return json_mmvkn(int(data['v']), float(data['a']),
                           float(data['miu']), int(data['to']), int(data['n']))
 
 
