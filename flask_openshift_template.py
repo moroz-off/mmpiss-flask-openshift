@@ -53,7 +53,8 @@ def json_mmv(*args):
     ms = mmv.MMV(*args)
     if not ms:
         return jsonify({}), 412
-    pk = sorted(set(ms.pk), reverse=True)
+    seen = set()
+    pk = (x for x in ms.pk if x not in seen and not seen.add(x))
     return jsonify({'data': tuple({'x': x, 'y': round(y, 12)} for x, y in enumerate(pk)),
                     'valcal': {'gm': round(ms.gamma_mean(), 5),
                                'jm': round(ms.j_mean(), 5),
