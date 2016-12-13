@@ -175,19 +175,20 @@
 					                                'ws': '?',
 					                                'wq': '?',
 					                                'ro': 0
-					                            },},
+					                            }},
 	    				mminf: {data: [' '], valcal: {'km': '?',
 					                                'wp': '?',
 					                                'ro': 0
-					                            },},
+					                            }},
 	    				mmv: {data: [' '], valcal: {'gm': '?',
 					                                'jm': '?',
 					                                'pt': '?',
 					                                'ro': 0
-					                            },},
+					                            }, data2: [], data3: []
+                                                    },
 	    				mmvk: {data: [' '], valcal: {'pt': '?',
 					                                'ro': 0
-					                            },},
+					                            }},
 	    				mmvkn: {data: [' '], valcal: {'km': '?',
 					                                'tm': '?',
 					                                'pt': '?',
@@ -198,6 +199,12 @@
 	    var cur_model = 'mm1';
 
 	    return {
+            setObjectMMV: function(value) {
+                ms_data['mmv'].data2.push(value);
+            },
+            setObjectMMV1: function(value) {
+                ms_data['mmv'].data3.push(value);
+            },
 	        setObject: function(value) {
 	            ms_data[cur_model].data.push(value);
 	        },
@@ -212,6 +219,14 @@
 					ms_data[cur_model].data.pop();
 				}
 	        },
+            clearObjectMMV: function() {
+                for (var i = ms_data['mmv'].data2.length; i > 0; i--) {
+                    ms_data['mmv'].data2.pop();
+                }
+                for (var i = ms_data['mmv'].data3.length; i > 0; i--) {
+                    ms_data['mmv'].data3.pop();
+                }
+            },
 	        getModel: function() {
 	            return cur_model;
 	        },
@@ -342,6 +357,15 @@
                     for (var i in data.valcal) {
                         sharedProperties.setValCalObject(i, data.valcal[i]);
                     }
+                    if ($scope.model == 'mmv') {
+                        sharedProperties.clearObjectMMV();
+                        for (var i = $scope.form_ms.v; i < data.data.length; i++) {
+                            sharedProperties.setObjectMMV(data.data[i]);
+                        }
+                        for (var i = 0; i <= $scope.form_ms.v; i++) {
+                            sharedProperties.setObjectMMV1(data.data[i]);
+                        }
+                    }
 	          })
               .error(function (data, error) {
                     if (error == "412") {
@@ -358,12 +382,39 @@
         $scope.$watch(function () {
 		    return sharedProperties.getObject();
 		}, function (value) {
-			$scope.data.dataset0 = value.data;
+		    if (sharedProperties.getModel() != 'mmv')
+			    $scope.data.dataset0 = value.data;
+            else
+                $scope.data.dataset0 = value.data3;
+                $scope.data.dataset1 = value.data2;
 		});
 
+        $scope.$watch(function () {
+            return sharedProperties.getModel();
+        }, function (value) {
+            if (value == 'mmv') {
+                $scope.options.series.push({
+                    axis: "y",
+                    dataset: "dataset1",
+                    key: "y",
+                    interpolation: {mode: "cardinal", tension: 0.7},
+                    label: "Wj",
+                    color: "#0a7e07",
+                    type: ['line', 'dot', 'area'],
+                    id: 'mySeries1'
+                })
+            }
+            else {
+                if ($scope.options.series.length == 2) {
+                    $scope.options.series.pop();
+                }
+            }
+        });
+
 		$scope.data = {
-			dataset0: sharedProperties.getObject().data
-		}
+			dataset0: sharedProperties.getObject().data,
+			dataset1: sharedProperties.getObject().data2
+		};
 
 		$scope.options = {
 			series: [
